@@ -24,17 +24,30 @@ This project builds an automated Monthly Recurring Revenue (MRR) engine for ente
 - Carry forward active MRR states for inactive months and default pre-signup states to `$0`.
 
 ### Requirement 3: Categorized MRR Waterfall Engine
-Categorize month-over-month revenue movements (from Month M-1 to Month M) strictly into 5 financial classifications:
-1. **New MRR:** First-time active customer (from $0 to >$0).
+Categorize month-over-month revenue movements ($M-1 \to M$) strictly into 5 financial classifications:
+1. **New MRR:** First-time active customer ($0 \to >0$).
 2. **Expansion MRR:** Active customer increasing their monthly contract value.
-3. **Contraction MRR:** Active customer reducing contract value while remaining active (>$0).
-4. **Churn MRR:** Active customer dropping to $0 MRR.
+3. **Contraction MRR:** Active customer reducing contract value while remaining active ($>0$).
+4. **Churn MRR:** Active customer dropping to `$0` MRR.
 5. **Reactivation MRR:** Previously churned customer returning to positive MRR.
 
 ### Requirement 4: Net Revenue Retention (NRR) Matrix
 Compute the 6-month Cohort Net Revenue Retention Matrix to measure organic expansion vs. churn:
+$$\text{NRR}_{c, t} = \frac{\text{Total USD MRR of Cohort } c \text{ in Month } t}{\text{Initial Starting USD MRR of Cohort } c \text{ at Month } 0} \times 100$$
 
+---
+
+## ⚙️ Tech Stack & Analytical Methods
+- **Language:** Python 3.10+
+- **Core Libraries:** `pandas`, `numpy`
+- **Key Concepts:** Time-Series Analysis, Dynamic FX Joins (`pd.merge_asof`), Grouped Windowing, Matrix Reshaping/Pivoting, SaaS Financial Modeling.
+
+---
+
+## 📂 Project Structure
 ```text
-           Total USD MRR of Cohort (c) in Month (t)
-NRR (%) = ------------------------------------------- x 100
-           Initial Starting USD MRR of Cohort (c) in Month 0
+├── subscription_events.csv    # Raw asynchronous subscription event logs
+├── fx_rates.csv               # Daily FX exchange rates (USD base)
+├── generate_data.py           # Synthetic dataset generator
+├── mrr_engine.py              # Main analytics & calculation engine
+└── README.md                  # Project documentation
